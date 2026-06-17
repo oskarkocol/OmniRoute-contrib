@@ -4,11 +4,35 @@
 
 // Shared pricing constants to reduce duplication
 const GPT_5_3_CODEX_PRICING = {
-  input: 5.0,
-  output: 20.0,
-  cached: 2.5,
-  reasoning: 30.0,
-  cache_creation: 5.0,
+  input: 1.75,
+  output: 14.0,
+  cached: 0.175,
+  reasoning: 21.0,
+  cache_creation: 1.75,
+};
+
+const GPT_5_4_PRICING = {
+  input: 2.5,
+  output: 15.0,
+  cached: 0.25,
+  reasoning: 22.5,
+  cache_creation: 2.5,
+};
+
+const GPT_5_4_MINI_PRICING = {
+  input: 0.75,
+  output: 4.5,
+  cached: 0.075,
+  reasoning: 6.75,
+  cache_creation: 0.75,
+};
+
+const GPT_5_4_NANO_PRICING = {
+  input: 0.2,
+  output: 1.25,
+  cached: 0.02,
+  reasoning: 1.875,
+  cache_creation: 0.2,
 };
 
 const GPT_5_5_PRICING = {
@@ -228,41 +252,17 @@ export const DEFAULT_PRICING = {
     "gpt-5.5-low": GPT_5_5_PRICING,
     "gpt-5.5-none": GPT_5_5_PRICING,
     // GPT 5.4
-    "gpt-5.4": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
-    "gpt5.4": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
+    "gpt-5.4": GPT_5_4_PRICING,
+    "gpt5.4": GPT_5_4_PRICING,
     // T12: fallback pricing for gpt-5.4 mini variants
-    "gpt-5.4-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
-    },
-    "gpt5.4-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
-    },
+    "gpt-5.4-mini": GPT_5_4_MINI_PRICING,
+    "gpt5.4-mini": GPT_5_4_MINI_PRICING,
     // gpt-5.4 reasoning-effort variants share the gpt-5.4 tier (registry exposes
     // -xhigh/-high/-medium/-low; without these rows they resolved to $0).
-    "gpt-5.4-xhigh": GPT_5_3_CODEX_PRICING,
-    "gpt-5.4-high": GPT_5_3_CODEX_PRICING,
-    "gpt-5.4-medium": GPT_5_3_CODEX_PRICING,
-    "gpt-5.4-low": GPT_5_3_CODEX_PRICING,
+    "gpt-5.4-xhigh": GPT_5_4_PRICING,
+    "gpt-5.4-high": GPT_5_4_PRICING,
+    "gpt-5.4-medium": GPT_5_4_PRICING,
+    "gpt-5.4-low": GPT_5_4_PRICING,
     // GPT 5.3 Codex family (all same pricing tier)
     "gpt-5.3-codex-spark": GPT_5_3_CODEX_PRICING,
     "gpt-5.3-codex": GPT_5_3_CODEX_PRICING,
@@ -655,27 +655,9 @@ export const DEFAULT_PRICING = {
     // gpt-5.4 family (public API tier; mirrors the codex 5.4 tier for the
     // base/mini, with a lower nano tier). Without these rows the openai
     // provider's gpt-5.4* models resolved to $0.
-    "gpt-5.4": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
-    "gpt-5.4-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
-    },
-    "gpt-5.4-nano": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.2,
-      reasoning: 2.4,
-      cache_creation: 0.4,
-    },
+    "gpt-5.4": GPT_5_4_PRICING,
+    "gpt-5.4-mini": GPT_5_4_MINI_PRICING,
+    "gpt-5.4-nano": GPT_5_4_NANO_PRICING,
     "gpt-4.1": {
       input: 2.0,
       output: 8.0,
