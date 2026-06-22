@@ -19,6 +19,30 @@ const GPT_5_5_PRICING = {
   cache_creation: 5.0,
 };
 
+const GEMINI_25_PRO_PRICING = {
+  input: 1.25,
+  output: 10.0,
+  cached: 0.125,
+  reasoning: 15.0,
+  cache_creation: 0.375,
+};
+
+const GEMINI_3_PRO_PRICING = {
+  input: 2.0,
+  output: 12.0,
+  cached: 0.2,
+  reasoning: 18.0,
+  cache_creation: 0.375,
+};
+
+const GEMINI_31_FLASH_LITE_PRICING = {
+  input: 0.25,
+  output: 1.5,
+  cached: 0.025,
+  reasoning: 2.25,
+  cache_creation: 0.083,
+};
+
 const CLAUDE_FABLE_5_PRICING = {
   input: 15.0,
   output: 75.0,
@@ -348,35 +372,11 @@ export const DEFAULT_PRICING = {
       reasoning: 4.5,
       cache_creation: 0.5,
     },
-    "gemini-3.1-flash-lite-preview": {
-      input: 0.5,
-      output: 3.0,
-      cached: 0.03,
-      reasoning: 4.5,
-      cache_creation: 0.5,
-    },
-    "gemini-3-pro-preview": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
-    "gemini-3.1-pro-preview": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
+    "gemini-3.1-flash-lite-preview": GEMINI_31_FLASH_LITE_PRICING,
+    "gemini-3-pro-preview": GEMINI_3_PRO_PRICING,
+    "gemini-3.1-pro-preview": GEMINI_3_PRO_PRICING,
 
-    "gemini-2.5-pro": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
+    "gemini-2.5-pro": GEMINI_25_PRO_PRICING,
     "gemini-2.5-flash": {
       input: 0.3,
       output: 2.5,
@@ -620,13 +620,7 @@ export const DEFAULT_PRICING = {
       reasoning: 3.75,
       cache_creation: 0.5,
     },
-    "gemini-3-pro": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
+    "gemini-3-pro": GEMINI_3_PRO_PRICING,
     "gemini-3-flash": {
       input: 0.5,
       output: 3.0,
@@ -634,13 +628,7 @@ export const DEFAULT_PRICING = {
       reasoning: 4.5,
       cache_creation: 0.5,
     },
-    "gemini-2.5-pro": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
+    "gemini-2.5-pro": GEMINI_25_PRO_PRICING,
     "grok-code-fast-1": {
       input: 0.5,
       output: 2.0,
@@ -863,41 +851,11 @@ export const DEFAULT_PRICING = {
   gemini: {
     // Gemini 3.1 Pro — novo flagship Google (2026-03-17)
     // Context: 1.050.000 tokens | Max Output: 65.536
-    "gemini-3.1-pro": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
-    "gemini-3-1-pro": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
-    "gemini-3-pro-preview": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
-    "gemini-3.1-pro-preview": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
-    "gemini-2.5-pro": {
-      input: 2.0,
-      output: 12.0,
-      cached: 0.25,
-      reasoning: 18.0,
-      cache_creation: 2.0,
-    },
+    "gemini-3.1-pro": GEMINI_3_PRO_PRICING,
+    "gemini-3-1-pro": GEMINI_3_PRO_PRICING,
+    "gemini-3-pro-preview": GEMINI_3_PRO_PRICING,
+    "gemini-3.1-pro-preview": GEMINI_3_PRO_PRICING,
+    "gemini-2.5-pro": GEMINI_25_PRO_PRICING,
     "gemini-2.5-flash": {
       input: 0.3,
       output: 2.5,
