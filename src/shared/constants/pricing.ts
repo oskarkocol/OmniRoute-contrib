@@ -20,43 +20,51 @@ const GPT_5_5_PRICING = {
 };
 
 const CLAUDE_FABLE_5_PRICING = {
-  input: 15.0,
-  output: 75.0,
-  cached: 7.5,
-  reasoning: 112.5,
-  cache_creation: 15.0,
+  input: 10.0,
+  output: 50.0,
+  cached: 1.0,
+  reasoning: 50.0,
+  cache_creation: 12.5,
 };
 
-const CLAUDE_OPUS_4_PRICING = {
+const CLAUDE_OPUS_45_PRICING = {
+  input: 5.0,
+  output: 25.0,
+  cached: 0.5,
+  reasoning: 25.0,
+  cache_creation: 6.25,
+};
+
+const CLAUDE_OPUS_4_LEGACY_PRICING = {
   input: 15.0,
   output: 75.0,
-  cached: 7.5,
-  reasoning: 112.5,
-  cache_creation: 15.0,
+  cached: 1.5,
+  reasoning: 75.0,
+  cache_creation: 18.75,
 };
 
 const CLAUDE_SONNET_4_PRICING = {
   input: 3.0,
   output: 15.0,
-  cached: 1.5,
+  cached: 0.3,
   reasoning: 15.0,
-  cache_creation: 3.0,
+  cache_creation: 3.75,
 };
 
 const CLAUDE_OPUS_46_PRICING = {
   input: 5.0,
   output: 25.0,
-  cached: 2.5,
-  reasoning: 37.5,
-  cache_creation: 5.0,
+  cached: 0.5,
+  reasoning: 25.0,
+  cache_creation: 6.25,
 };
 
 const CLAUDE_SONNET_46_PRICING = {
   input: 3.0,
   output: 15.0,
-  cached: 1.5,
-  reasoning: 22.5,
-  cache_creation: 3.0,
+  cached: 0.3,
+  reasoning: 15.0,
+  cache_creation: 3.75,
 };
 
 const GLM_PRICING = {
@@ -161,55 +169,13 @@ export const DEFAULT_PRICING = {
   // (https://platform.claude.com/docs/en/about-claude/pricing).
   // Cache write = 1.25x input, cache hit = 0.1x input, reasoning = output rate.
   cc: {
-    "claude-fable-5": {
-      input: 10.0,
-      output: 50.0,
-      cached: 1.0,
-      reasoning: 50.0,
-      cache_creation: 12.5,
-    },
-    "claude-opus-4-8": {
-      input: 5.0,
-      output: 25.0,
-      cached: 0.5,
-      reasoning: 25.0,
-      cache_creation: 6.25,
-    },
-    "claude-opus-4-7": {
-      input: 5.0,
-      output: 25.0,
-      cached: 0.5,
-      reasoning: 25.0,
-      cache_creation: 6.25,
-    },
-    "claude-opus-4-6": {
-      input: 5.0,
-      output: 25.0,
-      cached: 0.5,
-      reasoning: 25.0,
-      cache_creation: 6.25,
-    },
-    "claude-sonnet-4-6": {
-      input: 3.0,
-      output: 15.0,
-      cached: 0.3,
-      reasoning: 15.0,
-      cache_creation: 3.75,
-    },
-    "claude-opus-4-5-20251101": {
-      input: 5.0,
-      output: 25.0,
-      cached: 0.5,
-      reasoning: 25.0,
-      cache_creation: 6.25,
-    },
-    "claude-sonnet-4-5-20250929": {
-      input: 3.0,
-      output: 15.0,
-      cached: 0.3,
-      reasoning: 15.0,
-      cache_creation: 3.75,
-    },
+    "claude-fable-5": CLAUDE_FABLE_5_PRICING,
+    "claude-opus-4-8": CLAUDE_OPUS_45_PRICING,
+    "claude-opus-4-7": CLAUDE_OPUS_45_PRICING,
+    "claude-opus-4-6": CLAUDE_OPUS_46_PRICING,
+    "claude-sonnet-4-6": CLAUDE_SONNET_46_PRICING,
+    "claude-opus-4-5-20251101": CLAUDE_OPUS_45_PRICING,
+    "claude-sonnet-4-5-20250929": CLAUDE_SONNET_4_PRICING,
     "claude-haiku-4-5-20251001": {
       input: 1.0,
       output: 5.0,
@@ -778,85 +744,43 @@ export const DEFAULT_PRICING = {
 
   // Anthropic
   anthropic: {
-    "claude-sonnet-4-20250514": {
-      input: 3.0,
-      output: 15.0,
-      cached: 1.5,
-      reasoning: 15.0,
-      cache_creation: 3.0,
-    },
-    "claude-opus-4-20250514": {
-      input: 15.0,
-      output: 75.0,
-      cached: 7.5,
-      reasoning: 112.5,
-      cache_creation: 15.0,
-    },
-    "claude-3-5-sonnet-20241022": {
-      input: 3.0,
-      output: 15.0,
-      cached: 1.5,
-      reasoning: 15.0,
-      cache_creation: 3.0,
-    },
+    "claude-sonnet-4-20250514": CLAUDE_SONNET_4_PRICING,
+    "claude-opus-4-20250514": CLAUDE_OPUS_4_LEGACY_PRICING,
+    "claude-3-5-sonnet-20241022": CLAUDE_SONNET_4_PRICING,
     // Claude 4.5 Haiku — modelo eco mais recente da Anthropic (2025-10)
     "claude-haiku-4-5-20251001": {
       input: 1.0,
       output: 5.0,
-      cached: 0.5,
-      reasoning: 7.5,
-      cache_creation: 1.0,
+      cached: 0.1,
+      reasoning: 5.0,
+      cache_creation: 1.25,
     },
     "claude-haiku-4.5": {
       input: 1.0,
       output: 5.0,
-      cached: 0.5,
-      reasoning: 7.5,
-      cache_creation: 1.0,
+      cached: 0.1,
+      reasoning: 5.0,
+      cache_creation: 1.25,
     },
     // Claude Sonnet 4.6 — maxOutput 64k tokens, $3/$15/M
-    "claude-sonnet-4-6-20251031": {
-      input: 3.0,
-      output: 15.0,
-      cached: 1.5,
-      reasoning: 22.5,
-      cache_creation: 3.0,
-    },
-    "claude-sonnet-4.6": {
-      input: 3.0,
-      output: 15.0,
-      cached: 1.5,
-      reasoning: 22.5,
-      cache_creation: 3.0,
-    },
+    "claude-sonnet-4-6-20251031": CLAUDE_SONNET_46_PRICING,
+    "claude-sonnet-4.6": CLAUDE_SONNET_46_PRICING,
     // Claude Opus 4.6 — mais barato que Opus 4 ($5/$25 vs $15/$75)
-    "claude-opus-4-6-20251031": {
-      input: 5.0,
-      output: 25.0,
-      cached: 2.5,
-      reasoning: 37.5,
-      cache_creation: 5.0,
-    },
-    "claude-opus-4.6": {
-      input: 5.0,
-      output: 25.0,
-      cached: 2.5,
-      reasoning: 37.5,
-      cache_creation: 5.0,
-    },
+    "claude-opus-4-6-20251031": CLAUDE_OPUS_46_PRICING,
+    "claude-opus-4.6": CLAUDE_OPUS_46_PRICING,
     // Common model IDs (without dates) used across providers
     // Intentional duplicates of dot-notation variants (e.g. claude-opus-4.6)
     // to cover hyphen-notation IDs (claude-opus-4-6) used by some clients
     "claude-fable-5": CLAUDE_FABLE_5_PRICING,
-    "claude-opus-4.8": CLAUDE_OPUS_4_PRICING,
-    "claude-opus-4-8": CLAUDE_OPUS_4_PRICING,
-    "claude-opus-4-7": CLAUDE_OPUS_4_PRICING,
+    "claude-opus-4.8": CLAUDE_OPUS_45_PRICING,
+    "claude-opus-4-8": CLAUDE_OPUS_45_PRICING,
+    "claude-opus-4-7": CLAUDE_OPUS_45_PRICING,
     "claude-opus-4-6": CLAUDE_OPUS_46_PRICING,
     "claude-sonnet-4-6": CLAUDE_SONNET_46_PRICING,
-    "claude-opus-4-5-20251101": CLAUDE_OPUS_4_PRICING,
+    "claude-opus-4-5-20251101": CLAUDE_OPUS_45_PRICING,
     "claude-sonnet-4-5-20250929": CLAUDE_SONNET_4_PRICING,
     "claude-sonnet-4": CLAUDE_SONNET_4_PRICING,
-    "claude-opus-4": CLAUDE_OPUS_4_PRICING,
+    "claude-opus-4": CLAUDE_OPUS_4_LEGACY_PRICING,
   },
 
   // Gemini
