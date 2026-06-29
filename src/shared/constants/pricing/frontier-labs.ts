@@ -314,11 +314,11 @@ export const DEFAULT_PRICING_FRONTIER = {
       cache_creation: 0.435,
     },
     "deepseek-v4-flash": {
-      input: 0.07,
+      input: 0.14,
       output: 0.28,
-      cached: 0.014,
+      cached: 0.0028,
       reasoning: 0.28,
-      cache_creation: 0.07,
+      cache_creation: 0.14,
     },
   },
   blackbox: {
