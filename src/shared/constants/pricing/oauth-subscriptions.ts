@@ -2,10 +2,7 @@
  * Pricing data — oauth-subscriptions family (OAuth / IDE subscription aliases (cc, codex, gemini-cli, antigravity, copilot, kiro…)).
  * Pure data; merged by default-pricing.ts via spread (god-file decomposition; semantic split).
  */
-import {
-  GPT_5_3_CODEX_PRICING,
-  GPT_5_5_PRICING,
-} from "./shared-tiers";
+import { GPT_5_3_CODEX_PRICING, GPT_5_5_PRICING } from "./shared-tiers";
 
 export const DEFAULT_PRICING_OAUTH = {
   cc: {
@@ -598,19 +595,19 @@ export const DEFAULT_PRICING_OAUTH = {
       cache_creation: 0.27,
     },
     "minimax-m2.1": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.1,
-      reasoning: 1.6,
-      cache_creation: 0.4,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
     // MiniMax M2.5 — cheaper than M2.1, reasoning + tools
     "minimax-m2.5": {
-      input: 0.27,
-      output: 0.95,
-      cached: 0.135,
-      reasoning: 1.425,
-      cache_creation: 0.27,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
     "glm-5": {
       input: 1.0,

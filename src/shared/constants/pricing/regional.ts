@@ -2,9 +2,7 @@
  * Pricing data — regional family (China + other regional providers (incl. GLM/Zhipu)).
  * Pure data; merged by default-pricing.ts via spread (god-file decomposition; semantic split).
  */
-import {
-  GLM_PRICING,
-} from "./shared-tiers";
+import { GLM_PRICING } from "./shared-tiers";
 
 export const DEFAULT_PRICING_REGIONAL = {
   glm: GLM_PRICING,
@@ -88,58 +86,56 @@ export const DEFAULT_PRICING_REGIONAL = {
       cache_creation: 0.5,
     },
     "minimax-m2.1": {
-      input: 0.5,
-      output: 2.0,
-      cached: 0.25,
-      reasoning: 3.0,
-      cache_creation: 0.5,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
     "MiniMax-M2.1": {
-      input: 0.5,
-      output: 2.0,
-      cached: 0.25,
-      reasoning: 3.0,
-      cache_creation: 0.5,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
-    // MiniMax M2.5 — mais barato que M2.1, reasoning + tools
+    // MiniMax M2.5 — reasoning + tools (Narev public API, 2026-06-29)
     // Context: 204.800 tokens | Max Output: 16.384 tokens
     "minimax-m2.5": {
-      input: 0.27,
-      output: 0.95,
-      cached: 0.135,
-      reasoning: 1.425,
-      cache_creation: 0.27,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
     "MiniMax-M2.5": {
-      input: 0.27,
-      output: 0.95,
-      cached: 0.135,
-      reasoning: 1.425,
-      cache_creation: 0.27,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
-    // T12: MiniMax M2.7 — new default model (sub2api PR #1120)
-    // Upgraded from M2.5, same API endpoint api.minimax.io
-    // Pricing estimated, check https://platform.minimaxi.com/document/Price
+    // MiniMax M2.7 — new default model (Narev/minimax API, 2026-06-29)
     "minimax-m2.7": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.2,
-      reasoning: 2.4,
-      cache_creation: 0.4,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.06,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
     "MiniMax-M2.7": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.2,
-      reasoning: 2.4,
-      cache_creation: 0.4,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.06,
+      reasoning: 1.2,
+      cache_creation: 0.3,
     },
     "minimax-m2.7-highspeed": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.2,
+      input: 0.6,
+      output: 2.4,
+      cached: 0.06,
       reasoning: 2.4,
-      cache_creation: 0.4,
+      cache_creation: 0.6,
     },
   },
   zai: {
