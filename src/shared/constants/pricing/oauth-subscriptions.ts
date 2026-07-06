@@ -2,7 +2,15 @@
  * Pricing data — oauth-subscriptions family (OAuth / IDE subscription aliases (cc, codex, antigravity, copilot, kiro…)).
  * Pure data; merged by default-pricing.ts via spread (god-file decomposition; semantic split).
  */
-import { GPT_5_3_CODEX_PRICING, GPT_5_5_PRICING } from "./shared-tiers";
+import {
+  GPT_5_3_CODEX_PRICING,
+  GPT_5_4_PRICING,
+  GPT_5_4_MINI_PRICING,
+  GPT_5_5_PRICING,
+  GPT_5_2_PRICING,
+  GPT_5_1_PRICING,
+  GPT_5_1_CODEX_MINI_PRICING,
+} from "./shared-tiers";
 
 export const DEFAULT_PRICING_OAUTH = {
   cc: {
@@ -81,35 +89,11 @@ export const DEFAULT_PRICING_OAUTH = {
     "gpt-5.5-low": GPT_5_5_PRICING,
     "gpt-5.5-none": GPT_5_5_PRICING,
     // GPT 5.4
-    "gpt-5.4": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
-    "gpt5.4": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
+    "gpt-5.4": GPT_5_4_PRICING,
+    "gpt5.4": GPT_5_4_PRICING,
     // T12: fallback pricing for gpt-5.4 mini variants
-    "gpt-5.4-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
-    },
-    "gpt5.4-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
-    },
+    "gpt-5.4-mini": GPT_5_4_MINI_PRICING,
+    "gpt5.4-mini": GPT_5_4_MINI_PRICING,
     // gpt-5.4 reasoning-effort variants share the gpt-5.4 tier (registry exposes
     // -xhigh/-high/-medium/-low; without these rows they resolved to $0).
     "gpt-5.4-xhigh": GPT_5_3_CODEX_PRICING,
@@ -130,49 +114,13 @@ export const DEFAULT_PRICING_OAUTH = {
       reasoning: 9.0,
       cache_creation: 1.5,
     },
-    "gpt-5.2-codex": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
+    "gpt-5.2-codex": GPT_5_2_PRICING,
 
-    "gpt-5.2": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
-    "gpt-5.1-codex-max": {
-      input: 8.0,
-      output: 32.0,
-      cached: 4.0,
-      reasoning: 48.0,
-      cache_creation: 8.0,
-    },
-    "gpt-5.1-codex": {
-      input: 4.0,
-      output: 16.0,
-      cached: 2.0,
-      reasoning: 24.0,
-      cache_creation: 4.0,
-    },
-    "gpt-5.1-codex-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
-    },
-    "gpt-5.1": {
-      input: 4.0,
-      output: 16.0,
-      cached: 2.0,
-      reasoning: 24.0,
-      cache_creation: 4.0,
-    },
+    "gpt-5.2": GPT_5_2_PRICING,
+    "gpt-5.1-codex-max": GPT_5_1_PRICING,
+    "gpt-5.1-codex": GPT_5_1_PRICING,
+    "gpt-5.1-codex-mini": GPT_5_1_CODEX_MINI_PRICING,
+    "gpt-5.1": GPT_5_1_PRICING,
     "gpt-5-codex": {
       input: 3.0,
       output: 12.0,

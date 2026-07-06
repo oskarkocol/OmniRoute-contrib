@@ -402,7 +402,7 @@ test("Codex Fast service tier applies documented GPT-5.5 and GPT-5.4 cost multip
   await localDb.updatePricing({
     codex: {
       "gpt-5.5": { input: 5, output: 30 },
-      "gpt-5.4": { input: 5, output: 30 },
+      "gpt-5.4": { input: 2.5, output: 15 },
     },
   });
 
@@ -411,7 +411,7 @@ test("Codex Fast service tier applies documented GPT-5.5 and GPT-5.4 cost multip
   assert.equal(await calculateCost("codex", "gpt-5.5", tokens), 0.02);
   assert.equal(await calculateCost("codex", "gpt-5.5", tokens, { serviceTier: "priority" }), 0.05);
   assert.equal(await calculateCost("codex", "gpt-5.5", tokens, { serviceTier: "flex" }), 0.01);
-  assert.equal(await calculateCost("codex", "gpt-5.4-high", tokens, { serviceTier: "fast" }), 0.04);
+  assert.equal(await calculateCost("codex", "gpt-5.4-high", tokens, { serviceTier: "fast" }), 0.02);
   assert.equal(await calculateCost("openai", "gpt-5.5", tokens, { serviceTier: "priority" }), 0.02);
   assert.equal(await calculateCost("openai", "gpt-5.5", tokens, { serviceTier: "flex" }), 0.02);
 });

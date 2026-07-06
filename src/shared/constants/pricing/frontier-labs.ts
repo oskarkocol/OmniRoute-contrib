@@ -4,6 +4,11 @@
  */
 import {
   GPT_5_5_PRICING,
+  GPT_5_5_PRO_PRICING,
+  GPT_5_4_PRICING,
+  GPT_5_4_PRO_PRICING,
+  GPT_5_4_MINI_PRICING,
+  GPT_5_4_NANO_PRICING,
   CLAUDE_FABLE_5_PRICING,
   CLAUDE_OPUS_4_PRICING,
   CLAUDE_SONNET_4_PRICING,
@@ -18,38 +23,12 @@ export const DEFAULT_PRICING_FRONTIER = {
     // The -pro tier mirrors its base family pricing until OpenAI publishes a
     // distinct pro rate; without these rows the openai provider's gpt-5.x-pro
     // models (in the registry) resolved to $0 and tripped the catalog pricing gate.
-    "gpt-5.5-pro": GPT_5_5_PRICING,
-    // gpt-5.4 family (public API tier; mirrors the codex 5.4 tier for the
-    // base/mini, with a lower nano tier). Without these rows the openai
-    // provider's gpt-5.4* models resolved to $0.
-    "gpt-5.4": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
-    "gpt-5.4-pro": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
-    },
-    "gpt-5.4-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
-    },
-    "gpt-5.4-nano": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.2,
-      reasoning: 2.4,
-      cache_creation: 0.4,
-    },
+    "gpt-5.5-pro": GPT_5_5_PRO_PRICING,
+    // gpt-5.4 family (public API tier; Narev openai provider, 2026-07-06).
+    "gpt-5.4": GPT_5_4_PRICING,
+    "gpt-5.4-pro": GPT_5_4_PRO_PRICING,
+    "gpt-5.4-mini": GPT_5_4_MINI_PRICING,
+    "gpt-5.4-nano": GPT_5_4_NANO_PRICING,
     "gpt-4.1": {
       input: 2.0,
       output: 8.0,
