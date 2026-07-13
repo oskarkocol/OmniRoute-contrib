@@ -2,11 +2,43 @@
  * Pricing data — shared per-MTok tier constants (god-file decomposition). Pure data; merged by the barrel.
  */
 export const GPT_5_3_CODEX_PRICING = {
-  input: 5.0,
-  output: 20.0,
-  cached: 2.5,
-  reasoning: 30.0,
-  cache_creation: 5.0,
+  input: 3.5,
+  output: 28.0,
+  cached: 0.35,
+  reasoning: 42.0,
+  cache_creation: 3.5,
+};
+
+export const GPT_5_4_PRICING = {
+  input: 2.5,
+  output: 15.0,
+  cached: 0.25,
+  reasoning: 22.5,
+  cache_creation: 2.5,
+};
+
+export const GPT_5_4_MINI_PRICING = {
+  input: 1.5,
+  output: 9.0,
+  cached: 0.15,
+  reasoning: 13.5,
+  cache_creation: 1.5,
+};
+
+export const GPT_5_4_NANO_PRICING = {
+  input: 0.1,
+  output: 0.625,
+  cached: 0.01,
+  reasoning: 0.9375,
+  cache_creation: 0.1,
+};
+
+export const GPT_5_4_PRO_PRICING = {
+  input: 30.0,
+  output: 180.0,
+  cached: 3.0,
+  reasoning: 270.0,
+  cache_creation: 30.0,
 };
 
 export const GPT_5_5_PRICING = {
@@ -15,6 +47,46 @@ export const GPT_5_5_PRICING = {
   cached: 0.5,
   reasoning: 30.0,
   cache_creation: 5.0,
+};
+
+export const GPT_5_5_PRO_PRICING = {
+  input: 15.0,
+  output: 90.0,
+  cached: 3.0,
+  reasoning: 135.0,
+  cache_creation: 15.0,
+};
+
+export const GPT_5_2_PRICING = {
+  input: 1.75,
+  output: 14.0,
+  cached: 0.175,
+  reasoning: 21.0,
+  cache_creation: 1.75,
+};
+
+export const GPT_5_1_PRICING = {
+  input: 1.25,
+  output: 10.0,
+  cached: 0.125,
+  reasoning: 15.0,
+  cache_creation: 1.25,
+};
+
+export const GPT_5_1_CODEX_PRICING = {
+  input: 2.5,
+  output: 20.0,
+  cached: 0.25,
+  reasoning: 30.0,
+  cache_creation: 2.5,
+};
+
+export const GPT_5_1_CODEX_MINI_PRICING = {
+  input: 0.25,
+  output: 2.0,
+  cached: 0.025,
+  reasoning: 3.0,
+  cache_creation: 0.25,
 };
 
 export const CLAUDE_FABLE_5_PRICING = {
