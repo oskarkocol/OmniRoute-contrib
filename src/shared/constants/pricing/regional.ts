@@ -2,9 +2,7 @@
  * Pricing data — regional family (China + other regional providers (incl. GLM/Zhipu)).
  * Pure data; merged by default-pricing.ts via spread (god-file decomposition; semantic split).
  */
-import {
-  GLM_PRICING,
-} from "./shared-tiers";
+import { GLM_PRICING } from "./shared-tiers";
 
 export const DEFAULT_PRICING_REGIONAL = {
   glm: GLM_PRICING,
@@ -144,25 +142,25 @@ export const DEFAULT_PRICING_REGIONAL = {
   },
   zai: {
     "glm-5": {
-      input: 0.38,
-      output: 1.98,
-      cached: 0.19,
-      reasoning: 2.97,
-      cache_creation: 0.38,
+      input: 1.0,
+      output: 3.2,
+      cached: 0.2,
+      reasoning: 4.8,
+      cache_creation: 1.0,
     },
     "glm-5-turbo": {
       input: 1.2,
       output: 4.0,
-      cached: 0.6,
-      reasoning: 6.0,
+      cached: 0.24,
+      reasoning: 4.0,
       cache_creation: 1.2,
     },
     "glm-4.7": {
-      input: 0.38,
-      output: 1.98,
-      cached: 0.19,
-      reasoning: 2.97,
-      cache_creation: 0.38,
+      input: 0.6,
+      output: 2.2,
+      cached: 0.11,
+      reasoning: 2.2,
+      cache_creation: 0.6,
     },
   },
 };
