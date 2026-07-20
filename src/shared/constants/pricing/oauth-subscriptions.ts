@@ -286,11 +286,11 @@ export const DEFAULT_PRICING_OAUTH = {
       cache_creation: 0.27,
     },
     "minimax-m2": {
-      input: 0.5,
-      output: 2.0,
-      cached: 0.25,
-      reasoning: 3.0,
-      cache_creation: 0.5,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.375,
     },
     "glm-4.6": {
       input: 0.5,
@@ -548,19 +548,19 @@ export const DEFAULT_PRICING_OAUTH = {
       cache_creation: 0.27,
     },
     "minimax-m2.1": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.1,
-      reasoning: 1.6,
-      cache_creation: 0.4,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.375,
     },
-    // MiniMax M2.5 — cheaper than M2.1, reasoning + tools
+    // MiniMax M2.5 — Narev public API (2026-07-20)
     "minimax-m2.5": {
-      input: 0.27,
-      output: 0.95,
-      cached: 0.135,
-      reasoning: 1.425,
-      cache_creation: 0.27,
+      input: 0.3,
+      output: 1.2,
+      cached: 0.03,
+      reasoning: 1.2,
+      cache_creation: 0.375,
     },
     "glm-5": {
       input: 1.0,
