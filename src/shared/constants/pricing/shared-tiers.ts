@@ -9,6 +9,38 @@ export const GPT_5_3_CODEX_PRICING = {
   cache_creation: 5.0,
 };
 
+export const GPT_5_4_PRICING = {
+  input: 2.5,
+  output: 15.0,
+  cached: 0.25,
+  reasoning: 22.5,
+  cache_creation: 2.5,
+};
+
+export const GPT_5_4_PRO_PRICING = {
+  input: 30.0,
+  output: 180.0,
+  cached: 3.0,
+  reasoning: 270.0,
+  cache_creation: 30.0,
+};
+
+export const GPT_5_4_MINI_PRICING = {
+  input: 0.75,
+  output: 4.5,
+  cached: 0.075,
+  reasoning: 6.75,
+  cache_creation: 0.75,
+};
+
+export const GPT_5_4_NANO_PRICING = {
+  input: 0.2,
+  output: 1.25,
+  cached: 0.02,
+  reasoning: 1.875,
+  cache_creation: 0.2,
+};
+
 export const GPT_5_5_PRICING = {
   input: 5.0,
   output: 30.0,
