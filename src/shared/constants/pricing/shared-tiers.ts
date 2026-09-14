@@ -17,28 +17,60 @@ export const GPT_5_5_PRICING = {
   cache_creation: 5.0,
 };
 
-export const GPT_5_6_SOL_PRICING = {
-  input: 5.0,
-  output: 30.0,
-  cached: 0.5,
-  reasoning: 30.0,
-  cache_creation: 6.25,
-};
-
-export const GPT_5_6_TERRA_PRICING = {
+export const GPT_5_4_PRICING = {
   input: 2.5,
   output: 15.0,
   cached: 0.25,
+  reasoning: 22.5,
+  cache_creation: 2.5,
+};
+
+export const GPT_5_4_PRO_PRICING = {
+  input: 30.0,
+  output: 180.0,
+  cached: 3.0,
+  reasoning: 270.0,
+  cache_creation: 30.0,
+};
+
+export const GPT_5_4_MINI_PRICING = {
+  input: 0.75,
+  output: 4.5,
+  cached: 0.075,
+  reasoning: 6.75,
+  cache_creation: 0.75,
+};
+
+export const GPT_5_4_NANO_PRICING = {
+  input: 0.2,
+  output: 1.25,
+  cached: 0.02,
+  reasoning: 1.875,
+  cache_creation: 0.2,
+};
+
+export const GPT_5_6_SOL_PRICING = {
+  input: 2.0,
+  output: 10.0,
+  cached: 0.2,
   reasoning: 15.0,
-  cache_creation: 3.125,
+  cache_creation: 2.5,
+};
+
+export const GPT_5_6_TERRA_PRICING = {
+  input: 2.0,
+  output: 12.0,
+  cached: 0.2,
+  reasoning: 12.0,
+  cache_creation: 2.5,
 };
 
 export const GPT_5_6_LUNA_PRICING = {
-  input: 1.0,
-  output: 6.0,
-  cached: 0.1,
-  reasoning: 6.0,
-  cache_creation: 1.25,
+  input: 0.2,
+  output: 1.2,
+  cached: 0.02,
+  reasoning: 1.2,
+  cache_creation: 0.25,
 };
 
 // Gemini 3.7 Flash introductory pricing through 2026-12-31. Google and
