@@ -45,10 +45,10 @@ test("OpenAI API catalog puts Astra before GPT-5.6 and keeps GPT-5.4", () => {
 test("OpenAI API Astra and GPT-5.6 pricing matches the published standard tier", () => {
   const expectedPricing = {
     "gpt-6-astra": { input: 10, cached: 1, cache_creation: 12.5, output: 50 },
-    "gpt-5.6": { input: 5, cached: 0.5, cache_creation: 6.25, output: 30 },
-    "gpt-5.6-sol": { input: 5, cached: 0.5, cache_creation: 6.25, output: 30 },
-    "gpt-5.6-terra": { input: 2.5, cached: 0.25, cache_creation: 3.125, output: 15 },
-    "gpt-5.6-luna": { input: 1, cached: 0.1, cache_creation: 1.25, output: 6 },
+    "gpt-5.6": { input: 2, cached: 0.2, cache_creation: 2.5, output: 10 },
+    "gpt-5.6-sol": { input: 2, cached: 0.2, cache_creation: 2.5, output: 10 },
+    "gpt-5.6-terra": { input: 2, cached: 0.2, cache_creation: 2.5, output: 12 },
+    "gpt-5.6-luna": { input: 0.2, cached: 0.02, cache_creation: 0.25, output: 1.2 },
   };
 
   for (const [modelId, expected] of Object.entries(expectedPricing)) {
