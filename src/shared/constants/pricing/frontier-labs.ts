@@ -8,6 +8,7 @@ import {
   GEMINI_3_7_FLASH_PROMO_PRICING,
   GEMINI_4_ARGON_PROMO_PRICING,
   GPT_5_5_PRICING,
+  GPT_5_5_PRO_PRICING,
   GPT_5_6_LUNA_PRICING,
   GPT_5_6_SOL_PRICING,
   GPT_5_6_TERRA_PRICING,
@@ -54,7 +55,7 @@ export const DEFAULT_PRICING_FRONTIER = {
     // The -pro tier mirrors its base family pricing until OpenAI publishes a
     // distinct pro rate; without these rows the openai provider's gpt-5.x-pro
     // models (in the registry) resolved to $0 and tripped the catalog pricing gate.
-    "gpt-5.5-pro": GPT_5_5_PRICING,
+    "gpt-5.5-pro": GPT_5_5_PRO_PRICING,
     // gpt-5.4 family (public API tier, with a lower nano tier). Without these rows the openai
     // provider's gpt-5.4* models resolved to $0.
     // gpt-5.4 standard rates: https://developers.openai.com/api/docs/models/gpt-5.4
@@ -66,25 +67,25 @@ export const DEFAULT_PRICING_FRONTIER = {
       cache_creation: 2.5,
     }),
     "gpt-5.4-pro": {
-      input: 5.0,
-      output: 20.0,
-      cached: 2.5,
-      reasoning: 30.0,
-      cache_creation: 5.0,
+      input: 30.0,
+      output: 180.0,
+      cached: 0,
+      reasoning: 180.0,
+      cache_creation: 0,
     },
     "gpt-5.4-mini": {
-      input: 1.5,
-      output: 6.0,
-      cached: 0.75,
-      reasoning: 9.0,
-      cache_creation: 1.5,
+      input: 0.75,
+      output: 4.5,
+      cached: 0.075,
+      reasoning: 4.5,
+      cache_creation: 0,
     },
     "gpt-5.4-nano": {
-      input: 0.4,
-      output: 1.6,
-      cached: 0.2,
-      reasoning: 2.4,
-      cache_creation: 0.4,
+      input: 0.2,
+      output: 1.25,
+      cached: 0.02,
+      reasoning: 1.25,
+      cache_creation: 0,
     },
     "gpt-4.1": {
       input: 2.0,
