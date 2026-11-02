@@ -21,8 +21,8 @@ test("T12: pricing table includes current Codex, MiniMax, GLM and Kimi entries",
 
   assert.ok(pricing.minimax["minimax-m2.5"], "missing minimax/minimax-m2.5");
   assert.ok(pricing.minimax["minimax-m2.7"], "missing minimax/minimax-m2.7");
-  assert.equal(pricing.minimax["minimax-m2.5"].input, 0.27);
-  assert.equal(pricing.minimax["minimax-m2.5"].output, 0.95);
+  assert.equal(pricing.minimax["minimax-m2.5"].input, 0.3);
+  assert.equal(pricing.minimax["minimax-m2.5"].output, 1.2);
 
   assert.ok(pricing.glm["glm-4.7"], "missing glm/glm-4.7");
   assert.ok(pricing.glm["glm-5"], "missing glm/glm-5");
@@ -62,11 +62,11 @@ test("T12: pricing table includes MiniMax-M3 (canonical + lowercase alias)", () 
   assert.ok(pricing.minimax["minimax-m3"], "missing minimax/minimax-m3 alias");
 
   for (const key of ["MiniMax-M3", "minimax-m3"]) {
-    assert.equal(pricing.minimax[key].input, 0.5, `${key} input`);
-    assert.equal(pricing.minimax[key].output, 2.0, `${key} output`);
-    assert.equal(pricing.minimax[key].cached, 0.25, `${key} cached`);
-    assert.equal(pricing.minimax[key].reasoning, 3.0, `${key} reasoning`);
-    assert.equal(pricing.minimax[key].cache_creation, 0.5, `${key} cache_creation`);
+    assert.equal(pricing.minimax[key].input, 0.3, `${key} input`);
+    assert.equal(pricing.minimax[key].output, 1.2, `${key} output`);
+    assert.equal(pricing.minimax[key].cached, 0.06, `${key} cached`);
+    assert.equal(pricing.minimax[key].reasoning, 1.8, `${key} reasoning`);
+    assert.equal(pricing.minimax[key].cache_creation, 0.3, `${key} cache_creation`);
   }
 });
 
