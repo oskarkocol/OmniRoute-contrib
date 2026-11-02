@@ -169,95 +169,37 @@ export const CLAUDE_SONNET_5_PRICING = {
   cache_creation: 2.5,
 };
 
+const GLM_5_1_5_3_STANDARD_PRICING = {
+  input: 1.4,
+  output: 4.4,
+  cached: 0.26,
+  reasoning: 4.4,
+  cache_creation: 1.4,
+};
+
+const GLM_5_3_FLASH_PRICING = {
+  input: 0.15,
+  output: 0.5,
+  cached: 0.03,
+  reasoning: 0.5,
+  cache_creation: 0.15,
+};
+
 export const GLM_PRICING = {
-  // GLM-5.3 Flash (2026-08-26, https://models.dev / Z.AI)
-  "glm-5.3-flash": {
-    input: 0.075,
-    output: 0.25,
-    cached: 0.015,
-    reasoning: 0.25,
-    cache_creation: 0.075,
-  },
-  "glm-5.3-flash-high": {
-    input: 0.075,
-    output: 0.25,
-    cached: 0.015,
-    reasoning: 0.25,
-    cache_creation: 0.075,
-  },
-  "glm-5.3-flash-low": {
-    input: 0.075,
-    output: 0.25,
-    cached: 0.015,
-    reasoning: 0.25,
-    cache_creation: 0.075,
-  },
-  "glm-5.3-flash-max": {
-    input: 0.075,
-    output: 0.25,
-    cached: 0.015,
-    reasoning: 0.25,
-    cache_creation: 0.075,
-  },
-  // GLM-5.3 (2026-08-14): Z.ai hasn't published 5.3 rates yet — mirrored from
-  // GLM-5.2 (same base model; 5.1 and 5.2 also share identical rates).
-  // Correct when https://docs.z.ai/guides/overview/pricing lists glm-5.3.
-  "glm-5.3": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
-  "glm-5.3-high": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
-  "glm-5.3-low": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
-  "glm-5.3-max": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
-  "glm-5.2": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
-  "glm-5.2-high": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
-  "glm-5.2-max": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
-  "glm-5.1": {
-    input: 1.2,
-    output: 5,
-    cached: 0.3,
-    reasoning: 5,
-    cache_creation: 1.2,
-  },
+  // GLM-5.3 Flash — Narev public zai rates (2026-11-02).
+  "glm-5.3-flash": GLM_5_3_FLASH_PRICING,
+  "glm-5.3-flash-high": GLM_5_3_FLASH_PRICING,
+  "glm-5.3-flash-low": GLM_5_3_FLASH_PRICING,
+  "glm-5.3-flash-max": GLM_5_3_FLASH_PRICING,
+  // GLM-5.1 / 5.2 / 5.3 share the same Narev public zai tier.
+  "glm-5.3": GLM_5_1_5_3_STANDARD_PRICING,
+  "glm-5.3-high": GLM_5_1_5_3_STANDARD_PRICING,
+  "glm-5.3-low": GLM_5_1_5_3_STANDARD_PRICING,
+  "glm-5.3-max": GLM_5_1_5_3_STANDARD_PRICING,
+  "glm-5.2": GLM_5_1_5_3_STANDARD_PRICING,
+  "glm-5.2-high": GLM_5_1_5_3_STANDARD_PRICING,
+  "glm-5.2-max": GLM_5_1_5_3_STANDARD_PRICING,
+  "glm-5.1": GLM_5_1_5_3_STANDARD_PRICING,
   "glm-5": {
     input: 1.0,
     output: 3.2,
