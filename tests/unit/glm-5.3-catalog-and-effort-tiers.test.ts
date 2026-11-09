@@ -195,9 +195,9 @@ test("GLM_PRICING covers the GLM-5.3 ids with GLM-5.2-parity rates and GLM-5.3-F
   }
   const flashPricing = GLM_PRICING["glm-5.3-flash"];
   assert.ok(flashPricing, "glm-5.3-flash pricing missing");
-  assert.equal(flashPricing.input, 0.075);
-  assert.equal(flashPricing.output, 0.25);
-  assert.equal(flashPricing.cached, 0.015);
+  assert.equal(flashPricing.input, 0.15);
+  assert.equal(flashPricing.output, 0.5);
+  assert.equal(flashPricing.cached, 0.03);
   for (const id of ["glm-5.3-flash-high", "glm-5.3-flash-low", "glm-5.3-flash-max"] as const) {
     assert.deepEqual(GLM_PRICING[id], flashPricing, id);
   }
