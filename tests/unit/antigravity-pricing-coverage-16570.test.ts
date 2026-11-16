@@ -130,8 +130,8 @@ const LEGACY_AG_ROWS = {
     input: 3.0,
     output: 15.0,
     cached: 0.3,
-    reasoning: 22.5,
-    cache_creation: 3.0,
+    reasoning: 15.0,
+    cache_creation: 3.75,
   },
   "claude-opus-4-6-thinking": {
     input: 5.0,
