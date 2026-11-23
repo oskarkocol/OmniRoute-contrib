@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { load } from "js-yaml";
+import { expression } from "../_helpers/workflowExpression.mjs";
 
 const workflow = load(
   readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8")
@@ -12,6 +13,9 @@ const policy = JSON.parse(
 const ready = {
   "github.event_name": "pull_request",
   "github.event.action": "synchronize",
+  "github.event.changes.base": null,
+  "github.event.changes.body": null,
+  "github.event.changes.title": null,
   "github.event.pull_request.draft": false,
   "github.head_ref": "fix/example",
   "github.event.pull_request.user.id": 1,
@@ -20,6 +24,7 @@ const ready = {
   "github.event.repository.id": 1157102282,
   "github.event.pull_request.head.repo.id": 1157102282,
   "github.event.pull_request.base.repo.id": 1157102282,
+  "needs.changes.result": "success",
   "needs.changes.outputs.code": "true",
   "needs.changes.outputs.docs": "true",
   "needs.changes.outputs.i18n": "true",
@@ -27,10 +32,19 @@ const ready = {
   "needs.lint.result": "success",
   "needs.test-unit.result": "success",
 };
-// The one event that skips the matrix: a description edit on a Mergify queue draft.
-const QUEUE_DRAFT_EDIT =
-  "github.event_name == 'pull_request' && github.event.action == 'edited' && github.event.pull_request.user.login == 'mergify[bot]' && startsWith(github.head_ref, 'mergify/merge-queue/') && github.event.pull_request.head.repo.id == github.event.repository.id";
-const ADMISSION_IF = `\${{ always() && !(${QUEUE_DRAFT_EDIT}) }}`;
+// A metadata-only edit has no new code candidate; base retargets still run the matrix.
+const METADATA_EDIT =
+  "github.event_name == 'pull_request' && github.event.action == 'edited' && !github.event.changes.base && (github.event.changes.body || github.event.changes.title)";
+const TRUSTED_QUEUE_EDIT =
+  METADATA_EDIT +
+  " && github.event.pull_request.draft == true && github.event.pull_request.user.id == 37929162 && " +
+  "github.event.pull_request.user.login == 'mergify[bot]' && github.event.pull_request.user.type == 'Bot' && " +
+  "startsWith(github.head_ref, 'mergify/merge-queue/') && github.event.repository.id > 0 && " +
+  "github.event.pull_request.head.repo.id == github.event.repository.id && " +
+  "github.event.pull_request.base.repo.id == github.event.repository.id";
+const ADMISSION_REQUESTED =
+  "github.event_name != 'pull_request' || github.event.pull_request.draft == false || needs.changes.outputs.queueCandidate == 'true' || needs.changes.result != 'success'";
+const ADMISSION_IF = `\${{ always() && !(${TRUSTED_QUEUE_EDIT}) && (${ADMISSION_REQUESTED}) }}`;
 
 const queue = {
   ...ready,
@@ -41,62 +55,9 @@ const queue = {
   "github.event.pull_request.user.type": "Bot",
 };
 
-// Evaluate only the boolean/comparison subset used by these job guards. Reject
-// unknown syntax instead of executing workflow text as JavaScript or shell code.
-function condition(expression, values) {
-  let text = String(expression).replace(/^\$\{\{\s*|\s*\}\}$/g, "");
-  text = text.replace(/'([^']*)'/g, (_, value) => JSON.stringify(value));
-  text = text.replace(/(?:github|needs)\.[\w.-]+/g, (key) => {
-    assert.ok(Object.hasOwn(values, key), `unsupported context: ${key}`);
-    return JSON.stringify(values[key]);
-  });
-  text = text.replace(/startsWith\(("[^"]*"),\s*("[^"]*")\)/g, (_, value, prefix) =>
-    String(JSON.parse(value).startsWith(JSON.parse(prefix)))
-  );
-  text = text.replace(/always\(\)/g, "true").replace(/cancelled\(\)/g, "false");
-  text = text.replace(
-    /("[^"]*"|true|false|null|\d+)\s*(==|!=|>)\s*("[^"]*"|true|false|null|\d+)/g,
-    (_, left, operator, right) => {
-      const a = JSON.parse(left);
-      const b = JSON.parse(right);
-      return String(operator === "==" ? a === b : operator === "!=" ? a !== b : a > b);
-    }
-  );
-  const tokens = text.match(/true|false|&&|\|\||[!()]/g) ?? [];
-  assert.equal(tokens.join(""), text.replace(/\s/g, ""), `unsupported guard: ${text}`);
-  let index = 0;
-  function primary() {
-    const token = tokens[index++];
-    if (token === "!") return !primary();
-    if (token === "(") {
-      const value = disjunction();
-      assert.equal(tokens[index++], ")");
-      return value;
-    }
-    assert.ok(["true", "false"].includes(token), `unexpected token: ${token}`);
-    return token === "true";
-  }
-  function conjunction() {
-    let value = primary();
-    while (tokens[index] === "&&") {
-      index++;
-      const next = primary();
-      value = value && next;
-    }
-    return value;
-  }
-  function disjunction() {
-    let value = conjunction();
-    while (tokens[index] === "||") {
-      index++;
-      const next = conjunction();
-      value = value || next;
-    }
-    return value;
-  }
-  const result = disjunction();
-  assert.equal(index, tokens.length);
-  return result;
+// Use the same bounded, typed interpreter as the metadata and draft fixtures.
+function condition(source, values) {
+  return Boolean(expression(source, values));
 }
 
 function jobValues(values) {
@@ -157,6 +118,49 @@ test("ordinary drafts, forged prefixes, forks and missing app authority stay ski
   }
 });
 
+// omni-queue (2026-11-13): the omni-queue merge queue pushes each candidate (base + the batch's
+// merge commits) to a fresh omni-queue/** branch. That push runs the full profile, exactly
+// like merge_group: every required lane except the pull-request-only ones.
+const omniQueuePush = {
+  ...Object.fromEntries(Object.keys(ready).map((key) => [key, null])),
+  "github.event_name": "push",
+  "github.event.action": null,
+  "github.head_ref": "",
+  "github.ref": "refs/heads/omni-queue/release-v3.8.54/b1-0123456789ab",
+  "github.event.repository.id": 1157102282,
+  "needs.changes.outputs.code": "true",
+  "needs.changes.outputs.docs": "true",
+  "needs.changes.outputs.i18n": "true",
+  "needs.changes.outputs.testsOnly": "false",
+  "needs.lint.result": "success",
+  "needs.test-unit.result": "success",
+};
+
+test("an omni-queue candidate push enables every applicable required CI lane", () => {
+  const values = jobValues(omniQueuePush);
+  assert.equal(values["needs.changes.outputs.queueCandidate"], "false", "not a Mergify draft");
+  for (const id of required) {
+    const prOnly = policy.profiles.ci.jobs[id].when === "pr";
+    assert.equal(scheduled(id, values), !prOnly, id);
+  }
+  assert.equal(condition(workflow.jobs["admission-verdict"].if, values), true);
+});
+
+test("a pull request whose head is named omni-queue/* is an ordinary pull request", () => {
+  // Only a push of the ref itself is a candidate; a contributor branch name grants nothing.
+  const values = jobValues({
+    ...queue,
+    "github.event.pull_request.user.id": 1,
+    "github.event.pull_request.user.login": "contributor",
+    "github.event.pull_request.user.type": "User",
+    "github.head_ref": "omni-queue/release-v3.8.54/b1-0123456789ab",
+  });
+  assert.equal(values["needs.changes.outputs.queueCandidate"], "false");
+  for (const id of required.filter((id) => id !== "changes")) {
+    assert.equal(scheduled(id, values), false, `${id} stays skipped on a draft`);
+  }
+});
+
 const fullLane = new Set(
   Object.entries(policy.profiles.ci.jobs)
     .filter(([, rule]) => rule.when.startsWith("full-"))
@@ -193,7 +197,11 @@ test("ready PRs run the fast lane, skip the full matrix, and classification stil
 // cancelled the candidate's real run, and Mergify dequeued the PR on the cancelled checks
 // ("checks interrupted"). An edit run now gets its own group and runs nothing heavy.
 function editRunValues(expression) {
-  const values = { ...queue, "github.event.action": "edited" };
+  const values = {
+    ...queue,
+    "github.event.action": "edited",
+    "github.event.changes.body": { from: "old summary" },
+  };
   for (const key of String(expression).match(/(?:github|needs)\.[\w.-]+/g) ?? []) {
     // `changes` is skipped, so every job it gates is skipped and exposes no outputs.
     if (key.startsWith("needs.")) values[key] = key.endsWith(".result") ? "skipped" : "";
@@ -210,7 +218,7 @@ for (const name of ["ci.yml", "quality.yml"]) {
   test(`${name}: a queue-draft description edit gets its own concurrency group`, () => {
     assert.equal(
       wf.concurrency.group,
-      `\${{ github.workflow }}-\${{ github.ref }}\${{ (${QUEUE_DRAFT_EDIT}) && format('-queue-edit-{0}', github.run_id) || '' }}`
+      `\${{ github.workflow }}-\${{ github.ref }}\${{ (${METADATA_EDIT}) && '-metadata-edit' || '' }}`
     );
     assert.equal(wf.concurrency["cancel-in-progress"], true);
   });
@@ -233,13 +241,13 @@ for (const name of ["ci.yml", "quality.yml"]) {
     }
   });
 
-  test(`${name}: only an edit run renames the gate check`, () => {
+  test(`${name}: queue edits and unrequested drafts keep distinct check names`, () => {
     // 2026-11-04: the edit run's skipped "Gate / CI" was the latest check of that name on draft
     // #18962, and Mergify dequeued #18961 on it before the real run reported.
     const checkName = name === "ci.yml" ? "Gate / CI" : "Gate / Quality";
     assert.equal(
       wf.jobs["admission-verdict"].name,
-      `\${{ (${QUEUE_DRAFT_EDIT}) && '${checkName} (queue-draft edit)' || '${checkName}' }}`
+      `\${{ (${TRUSTED_QUEUE_EDIT}) && '${checkName} (queue-draft edit)' || (${ADMISSION_REQUESTED}) && '${checkName}' || 'Admission not requested / ${name === "ci.yml" ? "CI" : "Quality"}' }}`
     );
   });
 
@@ -250,7 +258,7 @@ for (const name of ["ci.yml", "quality.yml"]) {
       { ...ready, "github.event.action": "edited" },
       { ...queue, "github.event.action": "synchronize" },
     ]) {
-      const v = { ...editRunValues(""), ...values };
+      const v = jobValues({ ...editRunValues(""), ...values });
       assert.equal(condition(wf.jobs.changes.if, v), true);
       assert.equal(condition(wf.jobs["admission-verdict"].if, v), true);
     }

@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import dns from "node:dns";
+import { getSettledModelCatalogRouteResponse } from "../_setup/modelCatalogFixture.ts";
 
 const TEST_DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "omniroute-image-route-"));
 process.env.DATA_DIR = TEST_DATA_DIR;
@@ -208,7 +210,7 @@ test("v1 image models GET exposes image-only modalities for credential-backed im
   await seedConnection("topaz", { apiKey: "topaz-key" });
   await seedConnection("stability-ai", { apiKey: "stability-key" });
 
-  const response = await imageRoute.GET();
+  const response = await getSettledModelCatalogRouteResponse(v1ModelsCatalog, imageRoute.GET);
   const body = (await response.json()) as { data: ImageModelRow[] };
   const byId = new Map(body.data.map((item) => [item.id, item]));
 
@@ -221,7 +223,7 @@ test("v1 image models GET exposes image-only modalities for credential-backed im
 test("v1 image models GET exposes current Codex image models and hides inactive providers", async () => {
   await seedConnection("codex", { apiKey: "codex-key" });
 
-  const response = await imageRoute.GET();
+  const response = await getSettledModelCatalogRouteResponse(v1ModelsCatalog, imageRoute.GET);
   const body = (await response.json()) as { data: Array<{ id: string }> };
   const ids = body.data.map((item) => item.id);
 
@@ -235,6 +237,7 @@ test("v1 image models GET exposes current Codex image models and hides inactive 
       "codex/gpt-5.6-luna-image",
       "codex/gpt-image-2.5-flare",
       "codex/gpt-image-2.5-sunburst",
+      "codex/gpt-image-2.6-sunburst",
       "codex/gpt-image-2",
     ]
   );
@@ -243,8 +246,12 @@ test("v1 image models GET exposes current Codex image models and hides inactive 
   assert.ok(!ids.some((id: string) => id.startsWith("xai/")));
 });
 
-test("v1 image generation POST accepts promptless requests for image-only models", async () => {
+test("v1 image generation POST accepts promptless requests for image-only models", async (t) => {
   await seedConnection("topaz", { apiKey: "topaz-key" });
+  t.mock.method(dns.promises, "lookup", async (hostname) => {
+    assert.equal(hostname, "example.com");
+    return [{ address: "93.184.216.34", family: 4 }];
+  });
 
   const mockFetchImpl = async (url, options: RequestInit = {}) => {
     const stringUrl = String(url);
@@ -1060,7 +1067,10 @@ for (const [provider, alias] of [
     assert.deepEqual(((await response.json()) as ImageResponseBody).data, [
       { b64_json: "ZmFrZQ==" },
     ]);
-    const catalog = await imageRoute.GET(new Request("http://localhost/v1/images/generations"));
+    const catalog = await getSettledModelCatalogRouteResponse(v1ModelsCatalog, () =>
+      imageRoute.GET(new Request("http://localhost/v1/images/generations"))
+    );
+    assert.equal(catalog.status, 200);
     const payload = (await catalog.json()) as { data: ImageModelRow[] };
     assert.ok(payload.data.some((row) => row.id === `${provider}/grok-imagine-image-2.0`));
   });

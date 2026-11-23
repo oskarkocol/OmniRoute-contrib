@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { load as loadYaml } from "js-yaml";
+import { expression } from "../_helpers/workflowExpression.mjs";
 import { evaluateAdmission } from "../../scripts/quality/admission-verdict.mjs";
 
 const policy = JSON.parse(
@@ -319,23 +320,53 @@ for (const profile of ["ci", "quality"]) {
         .sort(),
       ids
     );
-    // The exact check name, except on a Mergify queue-draft edit run (ci-mergify-candidate.test.mjs).
+    // Requested candidates keep the required name; unrequested drafts get no PASS receipt.
     const checkName = policy.profiles[profile].checkName;
-    assert.ok(
-      verdict.name.endsWith(`&& '${checkName} (queue-draft edit)' || '${checkName}' }}`),
-      verdict.name
-    );
-    // always(), except a description edit on a Mergify queue draft (ci-mergify-candidate.test.mjs).
-    assert.match(
-      verdict.if,
-      /^\$\{\{ always\(\) && !\(github\.event_name == 'pull_request' && github\.event\.action == 'edited' && github\.event\.pull_request\.user\.login == 'mergify\[bot\]' && /
-    );
+    const unrequestedName = `Admission not requested / ${profile === "ci" ? "CI" : "Quality"}`;
+    assert.ok(verdict.name.endsWith(`&& '${checkName}' || '${unrequestedName}' }}`), verdict.name);
+    // Classification failure still reaches the gate, including during human metadata revalidation.
+    assert.match(verdict.if, /^\$\{\{ always\(\) && /);
+    const edit = {
+      "github.event_name": "pull_request",
+      "github.event.action": "edited",
+      "github.event.changes.base": null,
+      "github.event.changes.body": { from: null },
+      "github.event.changes.title": null,
+      "github.event.pull_request.draft": false,
+      "github.event.pull_request.user.id": 1,
+      "github.event.pull_request.user.login": "contributor",
+      "github.event.pull_request.user.type": "User",
+      "github.head_ref": "fix/example",
+      "github.event.repository.id": 42,
+      "github.event.pull_request.head.repo.id": 42,
+      "github.event.pull_request.base.repo.id": 42,
+      "needs.changes.result": "failure",
+      "needs.changes.outputs.queueCandidate": "false",
+    };
+    assert.equal(Boolean(expression(verdict.if, edit)), true);
+    assert.equal(expression(verdict.name, edit), checkName);
+
+    const queueEdit = {
+      ...edit,
+      "github.event.pull_request.draft": true,
+      "github.event.pull_request.user.id": 37929162,
+      "github.event.pull_request.user.login": "mergify[bot]",
+      "github.event.pull_request.user.type": "Bot",
+      "github.head_ref": "mergify/merge-queue/example",
+    };
+    assert.equal(Boolean(expression(verdict.if, queueEdit)), false);
+    assert.equal(expression(verdict.name, queueEdit), `${checkName} (queue-draft edit)`);
+    queueEdit["github.event.changes.base"] = { ref: { from: "main" } };
+    assert.equal(Boolean(expression(verdict.if, queueEdit)), true);
+    assert.equal(expression(verdict.name, queueEdit), checkName);
     assert.deepEqual(workflow.on.pull_request.branches, ["main", "release/**"]);
     // Push runs only for main since 2026-10-18: each change already ran the matrix on its
     // PR and Release-Green validates the merged combination on release/** (the per-push
     // runs there were cancelled by the next merge, 24 of 24 in a day, while holding up to
     // 30 hosted slots). See tests/unit/build/push-storm-diet.test.ts.
-    assert.deepEqual(workflow.on.push.branches, ["main"]);
+    // omni-queue/** (2026-11-13): the omni-queue merge-queue candidates run the full profile
+    // on push (tests/unit/merge-queue/workflows.test.mjs).
+    assert.deepEqual(workflow.on.push.branches, ["main", "omni-queue/**"]);
     assert.ok(workflow.on.merge_group.types.includes("checks_requested"));
     for (const [id, job] of Object.entries(workflow.jobs)) {
       assert.ok(!String(job.if).includes("'hotfix'"), "a label cannot waive candidate evidence");
@@ -345,6 +376,14 @@ for (const profile of ["ci", "quality"]) {
           keepsForkCodeOffSelfHosted(job["runs-on"]),
           `${profile}:${id} must never run fork pull-request code on a self-hosted runner`
         );
+        // A push-capable self-hosted gate must also exclude omni-queue/** candidates: they are
+        // pushes whose tree carries fork code.
+        if (!job["runs-on"].includes("github.event_name == 'pull_request' &&")) {
+          assert.ok(
+            job["runs-on"].includes("!startsWith(github.ref, 'refs/heads/omni-queue/')"),
+            `${profile}:${id} must keep omni-queue/** candidates off the self-hosted runner`
+          );
+        }
       }
     }
     for (const id of ["lint-guard", "merge-integrity"]) {

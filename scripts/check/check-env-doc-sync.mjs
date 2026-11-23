@@ -109,6 +109,10 @@ const IGNORE_FROM_CODE = new Set([
   // CI providers (set by the runner).
   "GITHUB_BASE_REF",
   "GITHUB_BASE_SHA",
+  // The ref the job checked out: the new-code gates (check-complexity-ratchets.mjs,
+  // check-dead-code.mjs) hand it to newCodeMode.resolveMergeBase to tell an omni-queue/**
+  // candidate from a PR merge ref. Runner-owned, never OmniRoute runtime config.
+  "GITHUB_REF",
   // Actions-owned output file used by scripts/ci/release-green-result.mjs.
   // A runner protocol path, not user-configurable OmniRoute environment.
   "GITHUB_OUTPUT",
@@ -374,6 +378,20 @@ export const CODE_SCAN_ROOTS = [
 
 const CODE_ENV_REF = /process\.env\.([A-Z][A-Z0-9_]+)/g;
 
+// Allow CI-only process inputs solely where the coverage workflow owns them.
+const CI_HELPER_INPUTS = new Map([
+  [
+    path.join("scripts", "ci", "atomic-tsx-cache.mjs"),
+    new Set(["OMNIROUTE_CI_SYNC_TSX_CACHE", "TMPDIR"]),
+  ],
+  [path.join("scripts", "ci", "native-worker-v8-layout.mjs"), new Set(["NODE_V8_COVERAGE"])],
+  [
+    path.join("scripts", "check", "migration-commutation.ts"),
+    new Set(["NODE_V8_COVERAGE", "OMNIROUTE_CI_SYNC_TSX_CACHE"]),
+  ],
+  [path.join("scripts", "perf", "messages-route-memory-profile.ts"), new Set(["NODE_V8_COVERAGE"])],
+]);
+
 /**
  * Collect environment variable references in source code.
  *
@@ -400,7 +418,12 @@ export function scanCodeVars({ cwd, roots = CODE_SCAN_ROOTS } = {}) {
       return;
     }
     if (text.includes("\0")) return;
-    for (const m of text.matchAll(CODE_ENV_REF)) vars.add(m[1]);
+    const helperInputs = CI_HELPER_INPUTS.get(path.relative(repoRoot, file));
+    for (const match of text.matchAll(CODE_ENV_REF)) {
+      const name = match[1];
+      if (helperInputs?.has(name)) continue;
+      vars.add(name);
+    }
   };
   const walk = (dir) => {
     let entries;
