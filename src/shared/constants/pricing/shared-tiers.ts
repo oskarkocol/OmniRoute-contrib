@@ -94,11 +94,11 @@ export const GEMINI_3_8_FLASH_PROMO_PRICING = {
 };
 
 export const CLAUDE_FABLE_5_PRICING = {
-  input: 15.0,
-  output: 75.0,
-  cached: 7.5,
-  reasoning: 112.5,
-  cache_creation: 15.0,
+  input: 10.0,
+  output: 50.0,
+  cached: 1.0,
+  reasoning: 50.0,
+  cache_creation: 12.5,
 };
 
 export const CLAUDE_FABLE_5_1_PRICING = {
@@ -136,9 +136,9 @@ export const CLAUDE_OPUS_4_PRICING = {
 export const CLAUDE_SONNET_4_PRICING = {
   input: 3.0,
   output: 15.0,
-  cached: 1.5,
+  cached: 0.3,
   reasoning: 15.0,
-  cache_creation: 3.0,
+  cache_creation: 3.75,
 };
 
 export const CLAUDE_OPUS_46_PRICING = {
@@ -152,9 +152,9 @@ export const CLAUDE_OPUS_46_PRICING = {
 export const CLAUDE_SONNET_46_PRICING = {
   input: 3.0,
   output: 15.0,
-  cached: 1.5,
-  reasoning: 22.5,
-  cache_creation: 3.0,
+  cached: 0.3,
+  reasoning: 15.0,
+  cache_creation: 3.75,
 };
 
 // Claude Sonnet 5 / 5.5 — platform.claude.com, 2026-09-28.
@@ -164,7 +164,7 @@ export const CLAUDE_SONNET_46_PRICING = {
 export const CLAUDE_SONNET_5_PRICING = {
   input: 2.0,
   output: 10.0,
-  cached: 0.2,
+  cached: 0.1,
   reasoning: 10.0,
   cache_creation: 2.5,
 };
