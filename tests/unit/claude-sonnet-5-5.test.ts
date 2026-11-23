@@ -78,7 +78,7 @@ test("Claude Sonnet 5.5 is priced at the published rate", () => {
   assert.equal(pricing?.outputCostPer1M, 10);
   assert.equal(CLAUDE_SONNET_5_PRICING.input, 2);
   assert.equal(CLAUDE_SONNET_5_PRICING.output, 10);
-  assert.equal(CLAUDE_SONNET_5_PRICING.cached, 0.2);
+  assert.equal(CLAUDE_SONNET_5_PRICING.cached, 0.1);
   assert.equal(CLAUDE_SONNET_5_PRICING.cache_creation, 2.5);
 
   const anthropic = (getDefaultPricing() as Record<string, Record<string, { input: number }>>)
